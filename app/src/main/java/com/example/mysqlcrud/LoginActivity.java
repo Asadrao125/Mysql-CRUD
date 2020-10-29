@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -29,8 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText edtNumber, edtPassword;
     Button btnLogin, btnCreateAccount, btnShowUsers;
     String LOGIN_URL = "https://asadrao17.000webhostapp.com/login.php";
-    private String number, password, name, email, id;
-    String tag_json_obj = "json_obj_req";
+    private String number, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,37 +61,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 loginUser();
-                //newFunction();
             }
         });
-    }
-
-    private void newFunction() {
-        final JSONObject emptyJsonObject = new JSONObject();
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, LOGIN_URL, emptyJsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-
-                    JSONObject emptyJsonObject = new JSONObject("{}");
-
-                    //JSONObject jsonObject = new JSONObject(String.valueOf(response));
-                    name = emptyJsonObject.get("name").toString();
-                    email = emptyJsonObject.get("email").toString();
-                    Log.d("Login_User_Data", "onResponse: " + name + "\n" + email);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_obj);
     }
 
     private void loginUser() {
@@ -99,46 +70,54 @@ public class LoginActivity extends AppCompatActivity {
         number = edtNumber.getText().toString().trim();
         password = edtPassword.getText().toString().trim();
 
-        StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                if (response.equalsIgnoreCase("Login Complete")) {
+        if (TextUtils.isEmpty(number)) {
+            Toast.makeText(this, "Empty Number", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Empty Password", Toast.LENGTH_SHORT).show();
+        } else {
+            StringRequest request = new StringRequest(Request.Method.POST, LOGIN_URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response.equalsIgnoreCase("Login Complete")) {
 
-                    Toast.makeText(getApplicationContext(), "Login Successfully!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.putExtra("number", number);
+                        Toast.makeText(getApplicationContext(), "Login Successfully!", Toast.LENGTH_SHORT).show();
+                        edtPassword.setText("");
+                        edtNumber.setText("");
+                        Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                        intent.putExtra("number", number);
 
-                    //
-                    try {
-                        JSONObject jsonObject = new JSONObject(response);
-                        Toast.makeText(LoginActivity.this, "" + jsonObject.getString("name"), Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        //
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            Toast.makeText(LoginActivity.this, "" + jsonObject.getString("name"), Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //
+
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                     }
-                    //
-
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
                 }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
 
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("mobile", number);
-                params.put("password", password);
-                return params;
-            }
-        };
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("mobile", number);
+                    params.put("password", password);
+                    return params;
+                }
+            };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-        requestQueue.add(request);
+            RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
+            requestQueue.add(request);
+        }
     }
 }

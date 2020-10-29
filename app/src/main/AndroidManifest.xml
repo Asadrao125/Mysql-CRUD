@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MySqlCRUD"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ShowUsersActivity"></activity>
+        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".ShowUsersActivity" />
         <activity android:name=".HomeActivity" />
         <activity
             android:name=".LoginActivity"

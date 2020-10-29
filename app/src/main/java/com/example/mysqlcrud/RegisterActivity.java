@@ -55,13 +55,27 @@ public class RegisterActivity extends AppCompatActivity {
         mobile = edtMobile.getText().toString().trim();
 
         if (TextUtils.isEmpty(name)) {
-            Toast.makeText(this, "Empty Field", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Name Empty", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(email)) {
+            Toast.makeText(this, "Email Empty", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Password Empty", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(country)) {
+            Toast.makeText(this, "Country Empty", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(mobile)) {
+            Toast.makeText(this, "Mobile Empty", Toast.LENGTH_SHORT).show();
         } else {
             StringRequest request = new StringRequest(Request.Method.POST, REGISTER_URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     if (response.equalsIgnoreCase("Data Saved!")) {
                         Toast.makeText(RegisterActivity.this, "Data Saved To Mysql", Toast.LENGTH_SHORT).show();
+                        edtCountry.setText("");
+                        edtEmail.setText("");
+                        edtName.setText("");
+                        edtPassword.setText("");
+                        edtMobile.setText("");
+
                     } else {
                         Toast.makeText(RegisterActivity.this, "Number Already In Use!", Toast.LENGTH_SHORT).show();
                     }

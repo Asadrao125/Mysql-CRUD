@@ -1,10 +1,16 @@
 package com.example.mysqlcrud;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -40,7 +46,40 @@ public class ShowUsersActivity extends AppCompatActivity {
         myListView = findViewById(R.id.myListView);
         myAdapter = new MyAdapter(this, arrayListUser);
         myListView.setAdapter(myAdapter);
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+                ProgressDialog progressDialog = new ProgressDialog(view.getContext());
+                CharSequence[] dialogItem = {"View Data", "Edit Data", "Delete Data"};
+                builder.setTitle(arrayListUser.get(position).getName());
+                builder.setItems(dialogItem, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch (i) {
+                            case 0:
+                                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                                intent.putExtra("position", position);
+                                startActivity(intent);
+                                break;
+                            case 1:
+                                Toast.makeText(ShowUsersActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                                break;
+                            case 2:
+                                Toast.makeText(ShowUsersActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                    }
+                });
+
+                builder.create().show();
+
+            }
+        });
+
         retrieveData();
+
     }
 
     private void retrieveData() {

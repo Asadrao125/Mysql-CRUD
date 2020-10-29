@@ -1,6 +1,5 @@
 package com.example.mysqlcrud;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,15 +29,15 @@ public class MyAdapter extends ArrayAdapter<User> {
 
         TextView tvID = view.findViewById(R.id.user_id);
         TextView tvUsername = view.findViewById(R.id.user_name);
-        TextView tvEmail = view.findViewById(R.id.user_email);
+        /*TextView tvEmail = view.findViewById(R.id.user_email);
         TextView tvCountry = view.findViewById(R.id.user_country);
-        TextView tvMobile = view.findViewById(R.id.user_mobile);
+        TextView tvMobile = view.findViewById(R.id.user_mobile);*/
 
         tvID.setText(arrayListUser.get(position).getId());
         tvUsername.setText(arrayListUser.get(position).getName());
-        tvEmail.setText(arrayListUser.get(position).getEmail());
+       /* tvEmail.setText(arrayListUser.get(position).getEmail());
         tvCountry.setText(arrayListUser.get(position).getCountry());
-        tvMobile.setText(arrayListUser.get(position).getMobile());
+        tvMobile.setText(arrayListUser.get(position).getMobile());*/
 
         return view;
     }
