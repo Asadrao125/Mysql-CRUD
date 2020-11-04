@@ -36,6 +36,7 @@ public class ShowUsersActivity extends AppCompatActivity {
     private MyAdapter myAdapter;
     public static ArrayList<User> arrayListUser = new ArrayList<>();
     private String RETRIEVE_URL = "https://asadrao17.000webhostapp.com/retrieve.php";
+    private String DELETE_URL = "https://asadrao17.000webhostapp.com/delete.php";
     User user;
 
     @Override
@@ -64,22 +65,54 @@ public class ShowUsersActivity extends AppCompatActivity {
                                 startActivity(intent);
                                 break;
                             case 1:
-                                Toast.makeText(ShowUsersActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                                Intent intentUpdate = new Intent(getApplicationContext(), UpdateDataActivity.class);
+                                //Toast.makeText(ShowUsersActivity.this, "" + arrayListUser.get(position).getId(), Toast.LENGTH_SHORT).show();
+                                intentUpdate.putExtra("position", position);
+                                intentUpdate.putExtra("name", arrayListUser.get(position).getName());
+                                intentUpdate.putExtra("email", arrayListUser.get(position).getEmail());
+                                intentUpdate.putExtra("country", arrayListUser.get(position).getCountry());
+                                intentUpdate.putExtra("mobile", arrayListUser.get(position).getMobile());
+                                startActivity(intentUpdate);
                                 break;
                             case 2:
-                                Toast.makeText(ShowUsersActivity.this, "Coming Soon", Toast.LENGTH_SHORT).show();
+                                deleteData(position);
                                 break;
                         }
                     }
                 });
-
                 builder.create().show();
-
             }
         });
-
         retrieveData();
+    }
 
+    private void deleteData(int position) {
+        StringRequest request = new StringRequest(Request.Method.POST, DELETE_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equalsIgnoreCase("Data Deleted")) {
+                    Toast.makeText(ShowUsersActivity.this, "Data Deleted!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(ShowUsersActivity.this, "Failed To Delete!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(ShowUsersActivity.this, "" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("id", arrayListUser.get(position).getId());
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(ShowUsersActivity.this);
+        requestQueue.add(request);
     }
 
     private void retrieveData() {

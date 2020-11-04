@@ -3,14 +3,14 @@
     package="com.example.mysqlcrud">
 
     <application
-        android:name=".AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.MySqlCRUD"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".UpdateDataActivity"></activity>
+        <activity android:name=".DetailActivity" />
         <activity android:name=".ShowUsersActivity" />
         <activity android:name=".HomeActivity" />
         <activity

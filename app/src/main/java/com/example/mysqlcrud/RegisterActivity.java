@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText edtName, edtEmail, edtPassword, edtCountry, edtMobile;
-    Button btnSave;
-    String name, email, password, country, mobile;
-    String REGISTER_URL = "https://asadrao17.000webhostapp.com/insert.php";
+    private EditText edtName, edtEmail, edtPassword, edtCountry, edtMobile;
+    private Button btnSave;
+    private String name, email, password, country, mobile;
+    private String REGISTER_URL = "https://asadrao17.000webhostapp.com/insert.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
