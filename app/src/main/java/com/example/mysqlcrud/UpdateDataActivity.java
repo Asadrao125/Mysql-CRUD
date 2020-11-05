@@ -51,7 +51,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateData(position);
+                updateData(Integer.parseInt(ShowUsersActivity.arrayListUser.get(position).getId()));
             }
         });
 

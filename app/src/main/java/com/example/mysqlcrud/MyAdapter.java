@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.mysqlcrud.Model.User;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;

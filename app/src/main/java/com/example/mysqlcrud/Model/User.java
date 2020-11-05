@@ -1,4 +1,4 @@
-package com.example.mysqlcrud;
+package com.example.mysqlcrud.Model;
 
 public class User {
     private String id, name, email, country, mobile;
